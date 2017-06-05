@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Car Giphy</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<!-- Rendered buttons will get dumped Here  -->
+<div id="buttons-view"></div>
+
+<form id="car-form">
+	<label ="car-input">Add a Car</label>
+	<input type="text" id="car-input"><br>
+<!-- Button triggers new movie to be added -->
+	<input id="addCar" type="submit" value="Submit">
+</form>
+
+<!-- Cars GIF will get dumped dere -->
+    <div id="cars-view"></div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.js"</script>
+<script type="text/javascript.js">
+
+
+/// ARRAY OF CARS
+   var cars = [“FORD”, “TESLA”, “TOYOTA”, “PORSCHE”, “HONDA”, “CADILLAC”, “JEEP”, “HUMMER”, “CHRYSLER”, “FERARRI”];
+
+
+function displayCarInfo(){
+
+// EVENT LISTENER FOR THE CAR PAGE
+      ///$(“.car”).on(“click”,function(event) {
+      	///event.preventDefault();
+      //
+       var car = $(this).attr(“data-name”);
+       //STORING THE GIPHY API URL FOR A CAR IMAGE
+       var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car + “&api_key=dc6zaTOxFJmzC&limit=10”;
+
+       // AJAX CALL REQUEST TO OUR QUERY URL
+        $.ajax({
+          url: queryURL,
+          method: “GET”
+        })
+        //AFTER THE DATA FROM AJAX REQUEST COMES BACK
+  		.done(function(response) {
+        	// CREATING A DIV TO HOLD THE CAR
+        var carDiv = $("<div class='car'>");
+
+        var rating = response.rating;
+
+        var pOne = $("<p>").text("Rating: " + rating)
+
+        carDiv.append(pOne);
+
+        var imageURL = response.image
+
+        var image = $("<img>").attr("src", imgURL);
+
+        carDiv.append(image);
+
+        $("#cars-view").prepend(carDiv);
+       });
+	}
+
+
+function renderbuttons(){
+   $(“#buttons-view”).empty();
+}
+///loop through the array of cars
+   for (var i = 0; i < cars.length; i++) {
+/// then dynmically generating buttons for each car in an array
+     var a = $(“<button>“);
+/// adding a class
+     a.addClass(“car”);
+///  adding a data attribute with a value of the movie index i
+     a.attr(“data-name”, cars[i]);
+///  providing  the button's text with a value of the movie at index i
+     a.text(cars[i]);
+/// adding the button to the HTML
+     $(“#buttons-view”).append(a);
+   }
+  }
+
+/// adds a car to the button and array
+$("add-car").on("click", function(event) {
+		event.preventDefault();
+		///grabs the inout from the text box
+		var car = ("#car-input").val().trim();
+		///adds the car inputted from the text box to the array list
+		cars.push(car);
+		renderButtons();	
+	});
+
+$(document).on("click", ".car", displayCarInfo);
+renderButtons();
+     	
+   
+
+
+ 
+
+
+
+//RATING CHECK
+		for (var i = 0; i < results.length; i++) {
+		if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+		 		var gifDiv = $("<div class='item'>");
+		 		var rating = results[i].rating
+		 		var p = $("<p>")text("Rating: " + rating)
+		 		var carImage = $("<img>");
+
+		 	carImage>attr("src", results[i].images.fixed_height.url);
+		 		gidDiv.append(p);
+		 		gifDiv.append(carImage);
+		 	}
+
+		 }
+		});
+});
+
+// STILL ON LOAD BUT CLICK TO ANIMATE
+$(".gif").on("click",function()){
+	//make a variable named STATE and then store the image's data-state into it.
+	//use the .attr() method for this.
+	var state = $(this).attr('data-state')
+	//"check to see if the variable state is equal to "still".
+	if(state === 'still'){
+		$(this).attr('src', $(this).attr('data-animate'));
+		$(this).attr('data-state', 'animate');
+	}
+	else {
+		$(this).attr('src', $(this).attr('data-still'));
+		$(this).attr('data-state', 'still');
+	}
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
